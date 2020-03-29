@@ -5,6 +5,7 @@ from DadosParaPlotarEntity import Base
 
 engine = create_engine(Config.DATABASE_URI)
 Session = sessionmaker(bind=engine)
+s = Session()
 
 class DbContext:
 
@@ -15,3 +16,11 @@ class DbContext:
     @staticmethod
     def delete_all_tables():
         Base.metadata.drop_all(engine)
+
+    @staticmethod
+    def add(model):
+        s.add(model)
+        s.commit()
+        print 'add the model'
+        s.close()
+        print 'close the session'

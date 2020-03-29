@@ -1,6 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Text, DateTime, Float, Boolean, PickleType
-import datetime
+
 
 Base = declarative_base()
 
@@ -16,3 +16,4 @@ class DadosParaPlotar(Base):
     def __repr__(self):
         return "<DadosParaPlotar(periodo= '{}', dataEHora= '{}', viagens= '{}', Id_maquina= '{}')>"\
             .format(self.periodo, self.dataEHora, self.viagens, self.Id_maquina)
+

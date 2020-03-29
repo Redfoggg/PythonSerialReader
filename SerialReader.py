@@ -1,19 +1,30 @@
 #!/usr/bin/python2.7
 import time;
 import serial;
-import DbContext;
-import DadosParaPlotarModel as model
+import DbContext as db;
+from DadosParaPlotarEntity import DadosParaPlotar as Maquina
+import datetime
 
 
-
-viagens = 0;
+# viagens = 0
 
 ser = serial.Serial('/dev/ttyUSB0', 9600);
 
+db.DbContext.create_all_tables()
+
+
+
 moda_coord = 0
-moda_router = 0;
+moda_router = 0
 range_coord = False
 range_router = False
+
+
+id_maquina = raw_input('Digite a identificacao da maquina: ')
+maquina = Maquina(periodo = 8, dataEHora = datetime.datetime.now(), viagens = 0, 
+Id_maquina = id_maquina)
+
+db.DbContext.add(maquina)
 
 
 
@@ -32,11 +43,13 @@ def range_ponto_fixo():
         range_router = False
 
 def ponto_de_carga():
-    global viagens
+    # global viagens
     print 'range router: ' + str(range_router) + ' range coord: ' + str(range_coord)
     if  range_router and range_coord:
-        viagens += 1;
-        print 'viagens = ' + str(viagens)
+        maquina = db.s.query(Maquina).filter(Maquina.Id_maquina == id_maquina).first()
+        maquina.viagens += 1
+        db.s.commit()
+        print 'viagens = ' + str(maquina.viagens)
         while range_router and range_coord:
             print 'Esta na posicao'
             break
